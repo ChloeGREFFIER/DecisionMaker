@@ -23,7 +23,7 @@ function launchGame(game){
 
     const texts = {
         coin:"Flip the coin 🪙 and let fate decide.",
-        friends:"Answer fast to random questions. Your dilemma appears randomly — don't hesitate!",
+        friends:"Phoebe's game in friends💥 Just answer fast without thinking",
         spinner:"Spin the wheel 🎡 and see where it lands.",
         reaction:"Wait… then CLICK FAST ⚡ left or right.",
         dice:"Roll the dice 🎲 to decide your fate.",
@@ -106,30 +106,32 @@ function startCoin(){
 /* 👯 FRIENDS */
 function startFriends(){
 
-    // pool of questions
-    let pool = [
-        ["Coffee or Tea?","Coffee","Tea"],
-        ["City or Beach?","City","Beach"],
-        ["Morning or Night?","Morning","Night"],
-        ["Sweet or Salty?","Sweet","Salty"],
-        ["Summer or Winter?","Summer","Winter"],
-        ["Movie or Series?","Movie","Series"],
-        ["Text or Call?","Text","Call"],
-        ["Pizza or Burger?","Pizza","Burger"],
-        ["Car or Bike?","Car","Bike"],
-        ["Dog or Cat?","Dog","Cat"]
-    ];
+	// pool of questions
+	let pool = [
+		["Coffee or Tea?","Coffee","Tea"],
+		["City or Beach?","City","Beach"],
+		["Morning or Night?","Morning","Night"],
+		["Sweet or Salty?","Sweet","Salty"],
+		["Summer or Winter?","Summer","Winter"],
+		["Movie or Series?","Movie","Series"],
+		["Text or Call?","Text","Call"],
+		["Pizza or Burger?","Pizza","Burger"],
+		["Car or Bike?","Car","Bike"],
+		["Dog or Cat?","Dog","Cat"]
+	];
+	// shuffle
+	pool.sort(()=>Math.random()-0.5);
 
-    // shuffle questions
-    pool.sort(()=>Math.random()-0.5);
+	// pick between 5 and 10 questions
+	let nbQuestions = Math.floor(Math.random()*6) + 5; // 5 → 10
 
-    // take at least 5 random questions
-    let questions = pool.slice(0,5);
+	let questions = pool.slice(0, nbQuestions);
 
-    // insert dilemma randomly AFTER those 5
-    let insertIndex = Math.floor(Math.random()*questions.length);
-    questions.splice(insertIndex,0,[dilemma,choice1,choice2]);
-
+	// ❗ ensure dilemma is AFTER at least 5 questions
+	let insertIndex = Math.floor(Math.random() * (questions.length - 4)) + 5;
+	
+	let questionD = choice1 + " or " + choice2 ;
+	questions.splice(insertIndex, 0, [questionD, choice1, choice2]);
     let i=0;
 
     function next(){
@@ -137,11 +139,18 @@ function startFriends(){
         let timeLeft = 3;
 
         openGame(`
-        <h2>${q[0]}</h2>
-        <button onclick="answer(0)">👉 ${q[1]}</button>
-        <button onclick="answer(1)">👉 ${q[2]}</button>
-        <p id="timer">⏱ ${timeLeft}</p>
-        `);
+			<h2>${q[0]}</h2>
+
+			<button class="btn-choice1" onclick="answer(0)">
+			👉 ${q[1]}
+			</button>
+
+			<button class="btn-choice2" onclick="answer(1)">
+			👉 ${q[2]}
+			</button>
+
+			<p id="timer">⏱ ${timeLeft}</p>
+		`);
 
         let timerInterval = setInterval(()=>{
             timeLeft--;
@@ -165,7 +174,7 @@ function startFriends(){
             clearInterval(timerInterval);
             clearTimeout(timeout);
 
-            if(q[0] === dilemma){
+            if(q[0] === questionD){
                 endGame(c);
             } else {
                 i++;

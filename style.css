@@ -148,6 +148,15 @@ button:hover {
     100%{transform:rotateY(1800deg)}
 }
 
+/* FRIENDS */
+.btn-choice1 {
+    background:#e76f51;
+}
+
+.btn-choice2 {
+    background:#2a9d8f;
+}
+
 /* SPINNER */
 .spinner {
     width:200px;
