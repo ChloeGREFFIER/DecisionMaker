@@ -1,4 +1,4 @@
-# 🎯 Decision Maker
+# 🎯 Decision Maker - by KEKO 🪴
 
 > Stop overthinking. Let the game decide.
 
@@ -19,11 +19,6 @@ A fun web app that helps you make decisions using **mini-games** instead of thin
 * 🎡 **Spinner** → spin the wheel
 * ⚡ **Reaction** → click fast
 * 🎲 **Dice** → odd / even decides
-
-```txt
-Odd  → Choice 1
-Even → Choice 2
-```
 
 🚧 More games coming soon...
 
@@ -78,5 +73,11 @@ while(overthinking){
     playGame();
 }
 ```
+
+---
+
+## 🪴KEKO
+
+This game was mainly made with AI, as a computer science student i wanted to see how ai would replace me and uh... lets say i havent been disapointed... Atleast i got this cool game now ?
 
 ---
