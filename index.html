@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Decision Maker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <img src="logo.png" class="logo">
+    <h1>Decision Maker</h1>
+</header>
+
+<!-- SETUP -->
+<div id="setup">
+    <h2>Enter a dilemma</h2>
+    <input id="dilemmaInput" placeholder="Your dilemma">
+    <input id="choice1Input" placeholder="Choice 1">
+    <input id="choice2Input" placeholder="Choice 2">
+    <button class="start-btn" onclick="startApp()">Start</button>
+</div>
+
+<!-- MAIN -->
+<div id="main" class="hidden">
+
+    <div class="top-bar">
+        <h2 id="displayDilemma"></h2>
+
+        <div class="counters">
+            <div id="counter1">0</div>
+            <div id="counter2">0</div>
+        </div>
+    </div>
+
+    <div class="games">
+        <div class="game-card" onclick="launchGame('coin')">🪙 Coin</div>
+        <div class="game-card" onclick="launchGame('friends')">👯 Friends</div>
+        <div class="game-card" onclick="launchGame('spinner')">🎡 Spinner</div>
+        <div class="game-card" onclick="launchGame('reaction')">⚡ Reaction</div>
+        <div class="game-card" onclick="launchGame('dice')">🎲 Dice</div>
+        <div class="game-card" onclick="launchGame('memory')">🧠 Memory</div>
+        <div class="game-card" onclick="launchGame('mash')">🔘 Mash</div>
+        <div class="game-card" onclick="launchGame('target')">🎯 Target</div>
+        <div class="game-card" onclick="launchGame('elim')">✨ Elimination</div>
+    </div>
+
+    <button class="new-btn" onclick="resetAll()">New dilemma</button>
+</div>
+
+<!-- GAME -->
+<div id="gameArea" class="hidden"></div>
+
+<!-- INFO SCREEN -->
+<div id="infoScreen">
+    <div class="info-box">
+        <p id="infoText"></p>
+        <button onclick="startSelectedGame()">Start Game</button>
+    </div>
+</div>
+
+<!-- POPUP -->
+<div id="popup">
+    <div class="popup-box">
+        <p id="popupText"></p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

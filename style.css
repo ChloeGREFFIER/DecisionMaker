@@ -1,0 +1,261 @@
+body {
+    font-family: Arial;
+    margin:0;
+    background:#f5efe6;
+}
+
+/* HEADER */
+header {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    background:#e8dccb;
+    padding:10px;
+}
+
+.logo { height:40px; }
+
+/* SETUP */
+#setup {
+    text-align:center;
+    margin-top:50px;
+}
+
+input {
+    display:block;
+    margin:10px auto;
+    padding:12px;
+    width:260px;
+}
+
+/* BUTTONS */
+button {
+    padding:15px 25px;
+    border:none;
+    border-radius:12px;
+    background:#e76f51;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover {
+    transform:scale(1.05);
+}
+
+/* MAIN */
+.top-bar {
+    display:flex;
+    justify-content:space-between;
+    padding:30px;
+}
+
+#displayDilemma {
+    font-size:30px;
+    max-width:60%;
+}
+
+.counters {
+    display:flex;
+    gap:10px;
+}
+
+.counters div {
+    padding:15px;
+    border-radius:10px;
+    color:white;
+}
+
+#counter1 { background:#e76f51; }
+#counter2 { background:#2a9d8f; }
+
+/* GAMES GRID */
+.games {
+    display:grid;
+    grid-template-columns:repeat(2,250px);
+    gap:30px;
+    justify-content:center;
+}
+
+.game-card {
+    height:140px;
+    background:white;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.game-card:hover {
+    transform:scale(1.1);
+}
+
+/* GAME AREA */
+#gameArea {
+    text-align:center;
+    margin-top:50px;
+}
+
+/* COIN */
+.coin {
+    width:150px;
+    height:150px;
+    margin:auto;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform 2s;
+}
+
+.coin.flip {
+    transform:rotateY(1800deg);
+}
+
+.coin.flip {
+    animation:flip 2s;
+}
+
+.coin-face {
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    color:white;
+    backface-visibility:hidden;
+}
+
+/* FRONT = choice 1 */
+.front {
+    background:#e76f51;
+}
+
+/* BACK = choice 2 */
+.back {
+    background:#2a9d8f;
+    transform:rotateY(180deg);
+}
+
+.front { background:#e76f51; }  /* choice 1 */
+.back { background:#2a9d8f; }   /* choice 2 */
+
+@keyframes flip {
+    0%{transform:rotateY(0)}
+    100%{transform:rotateY(1800deg)}
+}
+
+/* SPINNER */
+.spinner {
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    margin:auto;
+    background:conic-gradient(#e76f51 0 50%, #2a9d8f 50% 100%);
+}
+
+@keyframes spin {
+    from{transform:rotate(0)}
+    to{transform:rotate(1440deg)}
+}
+
+.pointer {
+    font-size:40px;
+    text-align:center;
+    margin-bottom:-10px;
+}
+
+.spinner-text {
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+    transition:2s;
+}
+
+.half {
+    position:absolute;
+    width:100%;
+    height:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    color:white;
+}
+
+.left {
+    background:#e76f51;
+    top:0;
+}
+
+.right {
+    background:#2a9d8f;
+    bottom:0;
+}
+
+/* DICE */
+.dice {
+    font-size:80px;
+}
+
+@keyframes shake {
+    0%{transform:rotate(0)}
+    25%{transform:rotate(20deg)}
+    50%{transform:rotate(-20deg)}
+    75%{transform:rotate(10deg)}
+    100%{transform:rotate(0)}
+}
+
+/* INFO SCREEN */
+#infoScreen {
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.6);
+    align-items:center;
+    justify-content:center;
+}
+
+#infoScreen.active {
+    display:flex;
+}
+
+.info-box {
+    background:white;
+    padding:40px;
+    border-radius:20px;
+}
+
+/* POPUP */
+#popup {
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.6);
+    align-items:center;
+    justify-content:center;
+}
+
+#popup.active {
+    display:flex;
+}
+.popup-box {
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    font-size:28px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+/* HIDDEN */
+.hidden {
+    display:none;
+}
