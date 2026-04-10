@@ -4,9 +4,30 @@ let selectedGame;
 
 /* START */
 function startApp(){
-    dilemma = document.getElementById("dilemmaInput").value;
-    choice1 = document.getElementById("choice1Input").value;
-    choice2 = document.getElementById("choice2Input").value;
+
+    let d = document.getElementById("dilemmaInput").value.trim();
+    let c1input = document.getElementById("choice1Input").value.trim();
+    let c2input = document.getElementById("choice2Input").value.trim();
+
+    // 🎲 fallback dilemmas
+    const randomDilemmas = [
+        ["Pizza or Burger 🍕🍔","Pizza","Burger"],
+        ["Stay home or go out 🏠🌆","Stay home","Go out"],
+        ["Netflix or Sleep 📺😴","Netflix","Sleep"],
+        ["Text or Call 📱📞","Text","Call"]
+    ];
+
+    if(!d || !c1input || !c2input){
+        let rand = randomDilemmas[Math.floor(Math.random()*randomDilemmas.length)];
+
+        dilemma = d || rand[0];
+        choice1 = c1input || rand[1];
+        choice2 = c2input || rand[2];
+    } else {
+        dilemma = d;
+        choice1 = c1input;
+        choice2 = c2input;
+    }
 
     document.getElementById("displayDilemma").innerText = dilemma;
 
@@ -26,10 +47,10 @@ function launchGame(game){
         friends:"Phoebe's game in friends💥 Just answer fast without thinking",
         spinner:"Spin the wheel 🎡 and see where it lands.",
         reaction:"Wait… then CLICK FAST ⚡ left or right.",
-        dice:"Roll the dice 🎲 to decide your fate.",
+        dice:"Roll the dice 🎲 to decide your fate. Odd = "+choice1+" | Even = "+choice2 ,
         memory:"Game coming: remember fast sequences 🧠",
         mash:"Game coming: click as fast as possible 🔘",
-        target:"Game coming: hit a moving target 🎯",
+		target:"Multiple targets appear🎯. Click as many as possible. Each color represents a choice : the one you click most wins.",
         elim:"Game coming: random elimination ✨"
     };
 
@@ -45,6 +66,7 @@ function startSelectedGame(){
     else if(selectedGame==="spinner") startSpinner();
     else if(selectedGame==="reaction") startReaction();
     else if(selectedGame==="dice") startDice();
+	else if(selectedGame==="target") startTarget();
     else showPopup("Game coming soon 🚧");
 }
 
@@ -66,7 +88,7 @@ function endGame(res){
 
 /* POPUP */
 function showPopup(t){
-    popupText.innerText=t;
+    popupText.innerHTML = t; // ⚠️ use innerHTML instead of innerText
     popup.classList.add("active");
 }
 function closePopup(){
@@ -211,15 +233,57 @@ function startSpinner(){
 
 /* ⚡ REACTION */
 function startReaction(){
-    openGame(`<h2>WAIT...</h2>`);
+
+    openGame(`
+        <h2>Wait for it... ⚡</h2>
+        <p>Click as fast as possible when the buttons appear!</p>
+    `);
+
+    let delay = Math.random()*2000 + 1000; // random wait
 
     setTimeout(()=>{
-        gameArea.innerHTML=`
-        <h2>CLICK NOW ⚡</h2>
-        <button onclick="endGame(0)">LEFT</button>
-        <button onclick="endGame(1)">RIGHT</button>
-        `;
-    },Math.random()*2000+1000);
+
+        // random order
+        let order = Math.random() < 0.5
+            ? [0,1]
+            : [1,0];
+
+        openGame(`
+            <h2>CLICK NOW ⚡</h2>
+
+            <button class="btn-choice${order[0]+1}" onclick="react(${order[0]})">
+                ${order[0]===0 ? choice1 : choice2}
+            </button>
+
+            <button class="btn-choice${order[1]+1}" onclick="react(${order[1]})">
+                ${order[1]===0 ? choice1 : choice2}
+            </button>
+        `);
+
+        let clicked = false;
+
+        let timeout = setTimeout(()=>{
+            if(!clicked){
+                showPopup(`
+                    You weren't fast enough 😭<br><br>
+                    <button onclick="restartReaction()">Play again</button>
+                `);
+            }
+        },2000);
+
+        window.react = (res)=>{
+            if(clicked) return;
+            clicked = true;
+
+            clearTimeout(timeout);
+            endGame(res);
+        };
+
+    }, delay);
+}
+function restartReaction(){
+    closePopup();
+    startReaction();
 }
 
 /* 🎲 DICE */
@@ -227,7 +291,6 @@ function startDice(){
     openGame(`
         <div id="dice" class="dice">🎲</div>
         <p>Click to roll the dice 🎲</p>
-        <p>Odd = ${choice1} | Even = ${choice2}</p>
         <p id="result"></p>
     `);
 
@@ -257,6 +320,122 @@ function startDice(){
         },1000);
     };
 }
+
+
+/*🎯 TARGET */
+function startTarget(){
+
+    let duration = 30000; // 30s
+    let spawnRate = 500;
+
+    let score1 = 0;
+    let score2 = 0;
+
+    openGame(`
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+
+        <div id="playArea" style="position:relative; height:300px;"></div>
+
+        <p>Targets appear every second ⏱</p>
+        <p>Click them before they disappear! 🎯</p>
+    `);
+
+    let area = document.getElementById("playArea");
+
+    // 🎯 PROGRESS BAR
+    let bar = document.getElementById("progressBar");
+    let startTime = Date.now();
+
+    let progressInterval = setInterval(()=>{
+        let elapsed = Date.now() - startTime;
+        let percent = (elapsed / duration) * 100;
+        bar.style.width = percent + "%";
+    },50);
+
+    function spawnTarget(){
+
+        let isChoice1 = Math.random() < 0.5;
+
+        let target = document.createElement("div");
+
+        target.innerText = "🎯";
+        target.style.position = "absolute";
+        target.style.left = (Math.random()*90) + "%";
+        target.style.top = (Math.random()*80) + "%";
+        target.style.fontSize = "45px";
+        target.style.cursor = "pointer";
+        target.style.transition = "0.3s";
+
+        target.style.filter = isChoice1
+            ? "hue-rotate(0deg)"
+            : "hue-rotate(140deg)";
+
+        target.onclick = () => {
+
+            // score
+            if(isChoice1) score1++;
+            else score2++;
+
+            // ➕ +1 animation
+            let plus = document.createElement("div");
+            plus.innerText = "+1";
+            plus.style.position = "absolute";
+            plus.style.left = target.style.left;
+            plus.style.top = target.style.top;
+            plus.style.color = isChoice1 ? "#e76f51" : "#2a9d8f";
+            plus.style.fontWeight = "bold";
+            plus.style.transition = "1s";
+
+            area.appendChild(plus);
+
+            setTimeout(()=>{
+                plus.style.top = (parseFloat(plus.style.top) - 5) + "%";
+                plus.style.opacity = "0";
+            },10);
+
+            setTimeout(()=>plus.remove(),1000);
+
+            target.remove();
+        };
+
+        area.appendChild(target);
+
+        // ❌ fade out if not clicked
+        setTimeout(()=>{
+            target.style.opacity = "0";
+        },4000);
+
+        setTimeout(()=>{
+            target.remove();
+        },5000);
+    }
+
+    let spawnInterval = setInterval(spawnTarget, spawnRate);
+
+    setTimeout(()=>{
+        clearInterval(spawnInterval);
+        clearInterval(progressInterval);
+        finish();
+    }, duration);
+
+    function finish(){
+
+        openGame(`
+            <h2>Results 🎯</h2>
+            <p style="color:#e76f51">${choice1} : ${score1}</p>
+            <p style="color:#2a9d8f">${choice2} : ${score2}</p>
+        `);
+
+        let result = score1 >= score2 ? 0 : 1;
+
+        setTimeout(()=>{
+            endGame(result);
+        },2000);
+    }
+}
+
 
 /* RESET */
 function resetAll(){

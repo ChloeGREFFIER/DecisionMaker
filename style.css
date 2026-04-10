@@ -221,6 +221,26 @@ button:hover {
     100%{transform:rotate(0)}
 }
 
+/* TARGET */
+#target:hover {
+    transform: scale(1.3);
+}
+#progressBarContainer {
+    width:80%;
+    height:10px;
+    background:#ddd;
+    margin:10px auto;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+#progressBar {
+    height:100%;
+    width:0%;
+    background:linear-gradient(to right,#FFD23F);
+    transition:width 0.05s linear;
+}
+
 /* INFO SCREEN */
 #infoScreen {
     display:none;
@@ -263,6 +283,10 @@ button:hover {
     font-size:28px;
     text-align:center;
     box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+#playArea div:hover {
+    transform: scale(1.3);
 }
 /* HIDDEN */
 .hidden {
