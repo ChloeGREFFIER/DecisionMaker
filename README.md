@@ -1,3 +1,9 @@
+## 🪴KEKO
+
+This game was mainly made with AI as an experience.
+
+---
+
 # 🎯 Decision Maker - by KEKO 🪴
 
 > Stop overthinking. Let the game decide.
@@ -73,11 +79,5 @@ while(overthinking){
     playGame();
 }
 ```
-
----
-
-## 🪴KEKO
-
-This game was mainly made with AI, as a computer science student i wanted to see how ai would replace me and uh... lets say i havent been disapointed... Atleast i got this cool game now ?
 
 ---
